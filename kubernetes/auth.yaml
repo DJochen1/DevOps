@@ -1,12 +1,8 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth
-  labels:
-    app: "auth"
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: auth
@@ -16,22 +12,23 @@ spec:
         app: auth
     spec:
       containers:
-        - name: auth
-          image: djochen1/auth_api
-          ports:
+      - name: auth
+        imagePullPolicy: IfNotPresent
+        image: djochen1/auth_api
+        ports:
           - containerPort: 3000
+            name: http-web-svc
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: "auth"
-  labels:
-    service: auth
+  name: auth
 spec:
   selector:
     app: auth
   ports:
-    - name: http
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
+  - name: auth
+    protocol: TCP
+    port: 3000
+    targetPort: http-web-svc

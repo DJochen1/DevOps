@@ -1,12 +1,8 @@
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: chat
-  labels:
-    app: "chat"
 spec:
-  replicas: 1
   selector:
     matchLabels:
       app: chat
@@ -16,22 +12,23 @@ spec:
         app: chat
     spec:
       containers:
-        - name: chat
-          image: djochen1/chat_api
-          ports:
+      - name: chat
+        imagePullPolicy: IfNotPresent
+        image: djochen1/chat_api
+        ports:
           - containerPort: 3000
+            name: http-web-svc
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: "chat"
-  labels:
-    service: chat
+  name: chat
 spec:
   selector:
     app: chat
   ports:
-    - name: http
-      protocol: TCP
-      port: 3000
-      targetPort: 3000
+  - name: chat
+    protocol: TCP
+    port: 3000
+    targetPort: http-web-svc
