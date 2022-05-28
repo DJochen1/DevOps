@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: ghcr.io/dantehillen/auth:latest
+          image: ghcr.io/djochen1/auth:latest
           ports:
           - containerPort: 3000
 ---
